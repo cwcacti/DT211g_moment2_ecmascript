@@ -7,11 +7,11 @@ const nameElement = document.getElementById("namn");
 const progressionElement = document.getElementById("progression");
 
 /* Eventlyssnare */
-searchBoxElement.addEventListener("keyup", function (){searchData(searchBoxElement.value)}, false);
+searchBoxElement.addEventListener("keyup", function () { searchData(); }, false);
 
-courseCodeElement.addEventListener("click", function(e){filterData(1)}, false);
-nameElement.addEventListener("click", function(e){filterData(2)}, false);
-progressionElement.addEventListener("click", function(e){filterData(3)}, false);
+courseCodeElement.addEventListener("click", function () { filterData(1) }, false);
+nameElement.addEventListener("click", function () { filterData(2) }, false);
+progressionElement.addEventListener("click", function () { filterData(3) }, false);
 
 
 /* Åkallar uppstartsfunktion */
@@ -21,7 +21,7 @@ window.onload = (startUp);
 function startUp() {
 
     getData();
-    checkData();
+    writeData();
 
 }
 
@@ -35,20 +35,38 @@ async function getData() {
 }
 
 /* Sökbarhet */
-async function searchData(searchTerm) {
-    console.log(searchTerm);
-    let incomingData = await getData();
+async function searchData() {
+    let searchTerm = searchBoxElement.value;
+    const incomingData = await getData();
+    let outgoingData = incomingData;
+    let index = 0;
+
+    for (const object of outgoingData) {
+        if (object.code.includes(searchTerm)) {
+            index++;
+        } else if (object.coursename.includes(searchTerm)) {
+            index++;
+        } else if (object.progression.includes(searchTerm)) {
+            index++;
+        } else {
+            outgoingData.splice(index, 1);
+        }
+
+        return outgoingData
 
 
+    }
 }
 
 /* Sortering */
-async function filterData(incomingQuery){
-    console.log("Filtrerar"+incomingQuery);
+async function filterData(incomingQuery) {
+    console.log("Filtrerar" + incomingQuery);
+    let incomingData = await searchData();
+    console.log(incomingData);
 }
 
 /* Skriv ut data i dokumentet */
-async function checkData() {
+async function writeData() {
     let data = await getData();
     for (const object of data) {
 
