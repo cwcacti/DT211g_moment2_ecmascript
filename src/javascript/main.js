@@ -7,11 +7,11 @@ const nameElement = document.getElementById("namn");
 const progressionElement = document.getElementById("progression");
 
 /* Eventlyssnare */
-searchBoxElement.addEventListener("keyup", function () { searchData(); }, false);
+searchBoxElement.addEventListener("keyup", function () { getData(); writeData(); }, false);
 
-courseCodeElement.addEventListener("click", function () { filterData(1) }, false);
-nameElement.addEventListener("click", function () { filterData(2) }, false);
-progressionElement.addEventListener("click", function () { filterData(3) }, false);
+courseCodeElement.addEventListener("click", function () { sortData(1) }, false);
+nameElement.addEventListener("click", function () { sortData(2) }, false);
+progressionElement.addEventListener("click", function () { sortData(3) }, false);
 
 
 /* Åkallar uppstartsfunktion */
@@ -34,38 +34,45 @@ async function getData() {
     }
 }
 
-/* Sökbarhet */
-async function searchData() {
-
-}
-
 /* Sortering */
-async function filterData(incomingQuery) {
-    console.log("Filtrerar" + incomingQuery);
+async function sortData(incomingQuery) {
+    console.log("Sorterar" + incomingQuery);
 }
 
 /* Skriv ut data i dokumentet */
 async function writeData() {
+    /* Tar bort gamla element i diven */
+    mainElement.replaceChildren();
+
+    /* Hämta data från getData */
     let data = await getData();
+
+    /* Skapa element för varje objekt */
     for (const object of data) {
 
-        let newTrElement = document.createElement("tr");
-        mainElement.appendChild(newTrElement);
+        /* Sökbarhet */
+        let searchFilter = searchBoxElement.value;
+        if (object.code.includes(searchFilter) || object.coursename.includes(searchFilter) || object.progression.includes(searchFilter)) {
 
-        let firstTdElement = document.createElement("td");
-        let firstTdText = document.createTextNode(object.code);
-        newTrElement.appendChild(firstTdElement);
-        firstTdElement.appendChild(firstTdText);
+            /*Skapa element fortsättning */
+            let newTrElement = document.createElement("tr");
+            mainElement.appendChild(newTrElement);
 
-        let secondTdElement = document.createElement("td");
-        let secondTdText = document.createTextNode(object.coursename);
-        newTrElement.appendChild(secondTdElement);
-        secondTdElement.appendChild(secondTdText);
+            let firstTdElement = document.createElement("td");
+            let firstTdText = document.createTextNode(object.code);
+            newTrElement.appendChild(firstTdElement);
+            firstTdElement.appendChild(firstTdText);
 
-        let thirdTdElement = document.createElement("td");
-        let thirdTdText = document.createTextNode(object.progression);
-        newTrElement.appendChild(thirdTdElement);
-        thirdTdElement.appendChild(thirdTdText);
+            let secondTdElement = document.createElement("td");
+            let secondTdText = document.createTextNode(object.coursename);
+            newTrElement.appendChild(secondTdElement);
+            secondTdElement.appendChild(secondTdText);
+
+            let thirdTdElement = document.createElement("td");
+            let thirdTdText = document.createTextNode(object.progression);
+            newTrElement.appendChild(thirdTdElement);
+            thirdTdElement.appendChild(thirdTdText);
+        }
     }
 }
 
