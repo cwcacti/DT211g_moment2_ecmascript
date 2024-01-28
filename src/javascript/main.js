@@ -42,7 +42,7 @@ async function sortData(incomingQuery) {
 
 /* Skriv ut data i dokumentet */
 async function writeData() {
-    /* Tar bort gamla element i diven */
+    /* Tar bort gamla element i table */
     mainElement.replaceChildren();
 
     /* Hämta data från getData */
