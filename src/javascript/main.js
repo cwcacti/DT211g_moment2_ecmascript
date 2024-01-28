@@ -4,7 +4,10 @@ const searchBoxElement = document.getElementById("sökruta");
 const searchButtonElement = document.getElementById("sök");
 
 /* Eventlyssnare */
-searchButtonElement.addEventListener("click", function () { writeData(); }, false);
+searchBoxElement.addEventListener("input", function () { writeData(); }, false);
+
+/* Global variabel för sortering */
+let sortingCriteria = 0;
 
 /* Åkallar uppstartsfunktion */
 window.onload = (startUp);
@@ -26,13 +29,28 @@ async function getData() {
     }
 }
 
-/* Sortering */
+/* Sortera data */
 async function sortData(incomingQuery) {
-    console.log("Sorterar" + incomingQuery);
+    const data = await getData();
+    let sortedData = data;
+    switch (incomingQuery) {
+        case 1:
+            sortedData = data.sort((a, b) => (a.code < b.code) ? 1 : -1);
+            return sortedData;
+        case 2:
+            sortedData = data.sort((a, b) => (a.coursename < b.coursename) ? 1 : -1);
+            return sortedData;
+        case 3:
+            sortedData = data.sort((a, b) => (a.progression < b.progression) ? 1 : -1);
+            return sortedData;
+
+        default:
+            return data;
+    }
 }
 
 /* Skriv ut data i dokumentet */
-async function writeData() {
+async function writeData(incomingData) {
     /* Tar bort gamla element i table */
     mainElement.replaceChildren();
 
@@ -44,25 +62,25 @@ async function writeData() {
     let courseCodeText = document.createTextNode("Kurskod:");
     courseCodeElement.appendChild(courseCodeText);
     courseCodeElement.id = "kurskod";
-    courseCodeElement.addEventListener("click", function () { sortData(1) }, false);
+    courseCodeElement.addEventListener("click", function () { sortingCriteria = 1; writeData(); }, false);
     headTrElement.appendChild(courseCodeElement);
 
     let nameElement = document.createElement("th");
     let nameText = document.createTextNode("Namn:");
     nameElement.appendChild(nameText);
     nameElement.id = "namn";
-    nameElement.addEventListener("click", function () { sortData(2) }, false);
+    nameElement.addEventListener("click", function () { sortingCriteria = 2; writeData(); }, false);
     headTrElement.appendChild(nameElement);
 
     let progressionElement = document.createElement("th");
     let progressionText = document.createTextNode("Progression:");
     progressionElement.appendChild(progressionText);
     progressionElement.id = "progression";
-    progressionElement.addEventListener("click", function () { sortData(3) }, false);
-headTrElement.appendChild(progressionElement);
+    progressionElement.addEventListener("click", function () { sortingCriteria = 3; writeData(); }, false);
+    headTrElement.appendChild(progressionElement);
 
-    /* Hämta data från getData */
-    let data = await getData();
+    /*Hämta data från sortData */
+    let data = await sortData(sortingCriteria);
 
     /* Skapa element för varje objekt */
     for (const object of data) {
@@ -92,42 +110,3 @@ headTrElement.appendChild(progressionElement);
         }
     }
 }
-
-
-
-
-
-/* Gammal kod, om ifall jag behöver den igen
-
-async function searchData() {
-    let searchTerm = searchBoxElement.value;
-    const incomingData = await getData();
-    console.log(incomingData);
-    let outgoingData = incomingData;
-    let index = 0;
-
-    for (const object of outgoingData) {
-        if (object.code.includes(searchTerm)) {
-            let index = index+1;
-        } else if (object.coursename.includes(searchTerm)) {
-            let index = index+1;
-        } else if (object.progression.includes(searchTerm)) {
-            let index = index+1;
-        } else {
-            outgoingData.splice(index, 1);
-            console.log(index);
-        }
-
-        return outgoingData
-
-
-    }
-}
-
-async function filterData(incomingQuery) {
-    console.log("Filtrerar" + incomingQuery);
-    let incomingData = await searchData();
-    console.log(incomingData);
-}
-
-*/
