@@ -36,33 +36,12 @@ async function getData() {
 
 /* Sökbarhet */
 async function searchData() {
-    let searchTerm = searchBoxElement.value;
-    const incomingData = await getData();
-    let outgoingData = incomingData;
-    let index = 0;
 
-    for (const object of outgoingData) {
-        if (object.code.includes(searchTerm)) {
-            index++;
-        } else if (object.coursename.includes(searchTerm)) {
-            index++;
-        } else if (object.progression.includes(searchTerm)) {
-            index++;
-        } else {
-            outgoingData.splice(index, 1);
-        }
-
-        return outgoingData
-
-
-    }
 }
 
 /* Sortering */
 async function filterData(incomingQuery) {
     console.log("Filtrerar" + incomingQuery);
-    let incomingData = await searchData();
-    console.log(incomingData);
 }
 
 /* Skriv ut data i dokumentet */
@@ -89,3 +68,42 @@ async function writeData() {
         thirdTdElement.appendChild(thirdTdText);
     }
 }
+
+
+
+
+
+/* Gammal kod, om ifall jag behöver den igen
+
+async function searchData() {
+    let searchTerm = searchBoxElement.value;
+    const incomingData = await getData();
+    console.log(incomingData);
+    let outgoingData = incomingData;
+    let index = 0;
+
+    for (const object of outgoingData) {
+        if (object.code.includes(searchTerm)) {
+            let index = index+1;
+        } else if (object.coursename.includes(searchTerm)) {
+            let index = index+1;
+        } else if (object.progression.includes(searchTerm)) {
+            let index = index+1;
+        } else {
+            outgoingData.splice(index, 1);
+            console.log(index);
+        }
+
+        return outgoingData
+
+
+    }
+}
+
+async function filterData(incomingQuery) {
+    console.log("Filtrerar" + incomingQuery);
+    let incomingData = await searchData();
+    console.log(incomingData);
+}
+
+*/
