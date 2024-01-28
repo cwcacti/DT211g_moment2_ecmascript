@@ -1,13 +1,14 @@
 /* Variabler för existerande HTML-element */
 const mainElement = document.getElementById("innehåll");
 const searchBoxElement = document.getElementById("sökruta");
+const searchButtonElement = document.getElementById("sök");
 
 const courseCodeElement = document.getElementById("kurskod");
 const nameElement = document.getElementById("namn");
 const progressionElement = document.getElementById("progression");
 
 /* Eventlyssnare */
-searchBoxElement.addEventListener("keyup", function () { getData(); writeData(); }, false);
+searchButtonElement.addEventListener("click", function () {writeData(); }, false);
 
 courseCodeElement.addEventListener("click", function () { sortData(1) }, false);
 nameElement.addEventListener("click", function () { sortData(2) }, false);
@@ -46,6 +47,7 @@ async function writeData() {
 
     /* Hämta data från getData */
     let data = await getData();
+    console.log(data);
 
     /* Skapa element för varje objekt */
     for (const object of data) {
