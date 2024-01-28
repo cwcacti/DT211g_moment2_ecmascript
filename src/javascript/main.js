@@ -3,17 +3,8 @@ const mainElement = document.getElementById("innehåll");
 const searchBoxElement = document.getElementById("sökruta");
 const searchButtonElement = document.getElementById("sök");
 
-const courseCodeElement = document.getElementById("kurskod");
-const nameElement = document.getElementById("namn");
-const progressionElement = document.getElementById("progression");
-
 /* Eventlyssnare */
 searchButtonElement.addEventListener("click", function () { writeData(); }, false);
-
-courseCodeElement.addEventListener("click", function () { sortData(1) }, false);
-nameElement.addEventListener("click", function () { sortData(2) }, false);
-progressionElement.addEventListener("click", function () { sortData(3) }, false);
-
 
 /* Åkallar uppstartsfunktion */
 window.onload = (startUp);
@@ -44,6 +35,31 @@ async function sortData(incomingQuery) {
 async function writeData() {
     /* Tar bort gamla element i table */
     mainElement.replaceChildren();
+
+    /* Element för navigation av tabellen */
+    let headTrElement = document.createElement("tr");
+    mainElement.appendChild(headTrElement);
+
+    let courseCodeElement = document.createElement("th");
+    let courseCodeText = document.createTextNode("Kurskod:");
+    courseCodeElement.appendChild(courseCodeText);
+    courseCodeElement.id = "kurskod";
+    courseCodeElement.addEventListener("click", function () { sortData(1) }, false);
+    headTrElement.appendChild(courseCodeElement);
+
+    let nameElement = document.createElement("th");
+    let nameText = document.createTextNode("Namn:");
+    nameElement.appendChild(nameText);
+    nameElement.id = "namn";
+    nameElement.addEventListener("click", function () { sortData(2) }, false);
+    headTrElement.appendChild(nameElement);
+
+    let progressionElement = document.createElement("th");
+    let progressionText = document.createTextNode("Progression:");
+    progressionElement.appendChild(progressionText);
+    progressionElement.id = "progression";
+    progressionElement.addEventListener("click", function () { sortData(3) }, false);
+headTrElement.appendChild(progressionElement);
 
     /* Hämta data från getData */
     let data = await getData();
