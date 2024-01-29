@@ -17,3 +17,7 @@
 main {
     grid-column: 2/3;
 }
+
+th:hover {
+text-decoration: underline;
+}
